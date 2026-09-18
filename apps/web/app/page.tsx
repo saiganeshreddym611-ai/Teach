@@ -126,10 +126,12 @@ export default function Kiosk() {
           else maybeIdle();
           await refreshMastery(sessionId);
         },
-        onError: (m) => {
+        onError: async (m) => {
           setError(m);
           streamDoneRef.current = true;
           setVoice("idle");
+          // The grade may have landed before the tutor call failed - show it.
+          await refreshMastery(sessionId).catch(() => {});
         },
       });
       if (!started) {

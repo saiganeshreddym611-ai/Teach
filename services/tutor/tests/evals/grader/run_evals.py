@@ -1,4 +1,5 @@
-"""Run the grader against the hand-written cases. Needs ANTHROPIC_API_KEY.
+"""Run the configured grader (GRADER_PROVIDER in .env: claude | ollama) against the
+hand-written cases. Claude needs ANTHROPIC_API_KEY; Ollama needs the server + model.
 
     python tests/evals/grader/run_evals.py            # one pass
     python tests/evals/grader/run_evals.py --repeat 3 # consistency check
@@ -19,7 +20,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[2]))
 
 from tutor.curriculum import load_curriculum  # noqa: E402
-from tutor.grader import ClaudeGrader  # noqa: E402
+from tutor.llm import describe_grader, get_grader  # noqa: E402
 from tutor.models import NodeStatus  # noqa: E402
 
 
@@ -32,7 +33,8 @@ def check(expect: str, actual: str | None) -> bool:
 
 async def main(repeat: int, only: str | None) -> int:
     curriculum = load_curriculum("ind_as_115")
-    grader = ClaudeGrader()
+    grader = get_grader()
+    print(f"grader backend: {describe_grader()}")
     cases = sorted(HERE.glob("cases/*.json"))
     if only:
         cases = [c for c in cases if only in c.name]

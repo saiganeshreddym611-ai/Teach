@@ -1,7 +1,8 @@
 """Grader: student transcript + rubric -> structured verdicts.
 
-Two implementations behind one interface:
+Three implementations behind one interface:
 - ClaudeGrader   : claude-opus-5, structured output, effort=high.
+- OllamaGrader   : any Ollama model (default nemotron-3-super:cloud), JSON-schema output.
 - MockGrader     : deterministic keyword overlap, for key-less UI/dev runs.
 """
 from __future__ import annotations
@@ -12,11 +13,18 @@ from datetime import datetime, timezone
 from typing import Protocol
 
 from anthropic import AsyncAnthropic
+from ollama import AsyncClient as OllamaAsyncClient
 
 from .config import settings
 from .curriculum import Curriculum
 from .models import GraderResult, NodeStatus, NodeVerdict
 from .prompts import GRADER_INSTRUCTIONS, tree_block
+
+
+def _finalise(curriculum: Curriculum, result: GraderResult) -> GraderResult:
+    # Drop verdicts for ids not in the tree (defensive; no schema can enforce membership).
+    result.verdicts = [v for v in result.verdicts if v.node_id in curriculum.by_id]
+    return result
 
 
 class Grader(Protocol):
@@ -68,22 +76,110 @@ class ClaudeGrader:
         result: GraderResult | None = response.parsed_output
         if result is None:
             raise RuntimeError(f"grader returned no parsed output (stop_reason={response.stop_reason})")
-        # Drop verdicts for ids not in the tree (defensive; the schema can't enforce membership).
-        result.verdicts = [v for v in result.verdicts if v.node_id in curriculum.by_id]
-        _capture(session_id, user, result, response)
+        result = _finalise(curriculum, result)
+        _capture(
+            session_id, user, result,
+            provider="claude", model=response.model,
+            request_id=getattr(response, "_request_id", None),
+            usage=response.usage.model_dump() if response.usage else None,
+        )
         return result
 
 
-def _capture(session_id: str, user: str, result: GraderResult, response) -> None:
+def _inline_schema(schema: dict) -> dict:
+    """Resolve local $refs and forbid extra keys. Ollama cannot grammar-constrain
+    cloud models, so the schema is advisory there - a flat, explicit one is
+    followed far more reliably than one full of $defs."""
+    defs = schema.get("$defs", {})
+
+    def walk(node):
+        if isinstance(node, dict):
+            if "$ref" in node:
+                return walk(defs[node["$ref"].rsplit("/", 1)[-1]])
+            out = {k: walk(v) for k, v in node.items() if k != "$defs"}
+            if out.get("type") == "object" and "properties" in out:
+                out.setdefault("additionalProperties", False)
+            return out
+        if isinstance(node, list):
+            return [walk(x) for x in node]
+        return node
+
+    return walk(schema)
+
+
+OLLAMA_OUTPUT_CONTRACT = """
+Output format - return ONLY a JSON object of exactly this shape, nothing else:
+{"verdicts": [{"node_id": "<id from the tree>", "status": "VERIFIED|PARTIAL|GAP|NOT_MENTIONED", "confidence": 0.0-1.0, "evidence": "<= 25 words"}], "summary": "<one sentence>"}
+- "verdicts" is a list, never an object keyed by node id.
+- "status" is exactly one of VERIFIED, PARTIAL, GAP, NOT_MENTIONED.
+- Do not add keys that are not in the shape above.
+"""
+
+
+class OllamaGrader:
+    """Same prompts as ClaudeGrader, sent to an Ollama model with the GraderResult
+    JSON schema as `format` plus an explicit shape contract. temperature=0 for
+    repeatable verdicts. One corrective retry if the shape is wrong."""
+
+    def __init__(self, client: OllamaAsyncClient | None = None, model: str | None = None):
+        self.client = client or OllamaAsyncClient(host=settings.ollama_host)
+        self.model = model or settings.ollama_model
+        self.schema = _inline_schema(GraderResult.model_json_schema())
+
+    async def _chat(self, messages: list[dict]):
+        return await self.client.chat(
+            model=self.model,
+            messages=messages,
+            format=self.schema,
+            options={"temperature": 0, "num_ctx": 32768},
+        )
+
+    async def grade(self, curriculum, transcript, *, focus_node_id, prior_context, session_id) -> GraderResult:
+        user = _user_content(curriculum, transcript, focus_node_id, prior_context)
+        system = tree_block(curriculum)["text"] + "\n\n" + GRADER_INSTRUCTIONS + OLLAMA_OUTPUT_CONTRACT
+        messages = [{"role": "system", "content": system}, {"role": "user", "content": user}]
+        response = await self._chat(messages)
+        content = response.message.content or ""
+        try:
+            result = GraderResult.model_validate_json(content)
+        except Exception as first_err:
+            # One corrective round-trip: show the model its own output and the error.
+            messages += [
+                {"role": "assistant", "content": content},
+                {"role": "user", "content": (
+                    f"That output does not match the required shape ({type(first_err).__name__}). "
+                    "Re-emit the same verdicts as a JSON object with a top-level \"verdicts\" LIST and a "
+                    "\"summary\" string, exactly as specified in the output format. JSON only."
+                )},
+            ]
+            response = await self._chat(messages)
+            content = response.message.content or ""
+            try:
+                result = GraderResult.model_validate_json(content)
+            except Exception as e:
+                raise RuntimeError(f"ollama grader returned invalid JSON twice ({e}): {content[:300]}") from e
+        result = _finalise(curriculum, result)
+        _capture(
+            session_id, user, result,
+            provider="ollama", model=response.model, request_id=None,
+            usage={"prompt_eval_count": response.prompt_eval_count, "eval_count": response.eval_count,
+                   "total_ms": round((response.total_duration or 0) / 1e6), "retried": len(messages) > 2},
+        )
+        return result
+
+
+def _capture(session_id: str, user: str, result: GraderResult, *, provider: str, model: str,
+             request_id: str | None, usage: dict | None) -> None:
     """Every grader call is an eval candidate. Write it to disk."""
     try:
         settings.capture_dir.mkdir(parents=True, exist_ok=True)
         ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
         payload = {
             "session_id": session_id,
-            "request_id": getattr(response, "_request_id", None),
-            "model": response.model,
-            "usage": response.usage.model_dump() if response.usage else None,
+            "provider": provider,
+            "request_id": request_id,
+            "model": model,
+            "usage": usage,
             "input": user,
             "output": result.model_dump(),
         }

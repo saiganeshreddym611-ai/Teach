@@ -14,6 +14,11 @@ load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 class Settings:
     model: str = os.getenv("TUTOR_MODEL", "claude-opus-5")
     mock_llm: bool = os.getenv("MOCK_LLM", "0") in {"1", "true", "yes"}
+    # Backends: "claude" (default) or "ollama", per role. MOCK_LLM=1 overrides both.
+    grader_provider: str = os.getenv("GRADER_PROVIDER", "claude").lower()
+    tutor_provider: str = os.getenv("TUTOR_PROVIDER", "claude").lower()
+    ollama_model: str = os.getenv("OLLAMA_MODEL", "nemotron-3-super:cloud")
+    ollama_host: str = os.getenv("OLLAMA_HOST", "http://localhost:11434")
     cors_origins: list[str] = field(
         default_factory=lambda: [o.strip() for o in os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",") if o.strip()]
     )

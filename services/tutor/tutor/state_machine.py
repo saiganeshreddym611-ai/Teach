@@ -95,15 +95,15 @@ def _continue(curriculum: Curriculum, session: Session, force_teach_back: bool) 
             f"{_node_line(curriculum, session.target_node)}\n"
             f"This is instruct turn {turn} of {settings.max_instruct_turns_per_node}; time is up for explanation.\n"
             "Do: respond in one sentence to what the student just said, then ask them to explain the target node "
-            f"back to you in their own words with an example. End with the token {TEACH_BACK_SENTINEL}."
+            f"back to you in their own words with an example, then append the silent marker {TEACH_BACK_SENTINEL}."
         )
     return (
         "PHASE=INSTRUCT ACTION=CONTINUE\n"
         f"{_node_line(curriculum, session.target_node)}\n"
         f"This is instruct turn {turn} of {settings.max_instruct_turns_per_node}.\n"
         "Do: respond to what the student just said about this node - answer their question or correct the misconception. "
-        "If they clearly understand it now, ask them to explain it back in their own words with an example and end with "
-        f"the token {TEACH_BACK_SENTINEL}. Otherwise keep teaching and end with one check question."
+        "If they clearly understand it now, ask them to explain it back in their own words with an example and "
+        f"append the silent marker {TEACH_BACK_SENTINEL}. Otherwise keep teaching and end with one check question."
     )
 
 
@@ -118,7 +118,7 @@ def _teach_back_failed(curriculum: Curriculum, session: Session, result: GraderR
         f"Attempt {attempt} of {settings.max_teach_back_attempts}. Grader verdict: {vtext}.\n"
         f"Rubric the student must cover: {rubric}\n"
         "Do: say specifically which rubric point was missing or wrong, re-explain only that part in under 80 words, "
-        f"then ask them to explain the whole concept back once more. End with the token {TEACH_BACK_SENTINEL}."
+        f"then ask them to explain the whole concept back once more, then append the silent marker {TEACH_BACK_SENTINEL}."
     )
 
 

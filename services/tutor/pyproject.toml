@@ -9,6 +9,7 @@ dependencies = [
     "uvicorn[standard]>=0.30",
     "pydantic>=2.7",
     "python-dotenv>=1.0",
+    "ollama>=0.4",
 ]
 
 [project.optional-dependencies]

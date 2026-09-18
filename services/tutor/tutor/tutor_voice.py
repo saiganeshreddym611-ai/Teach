@@ -8,6 +8,7 @@ from __future__ import annotations
 from typing import AsyncIterator, Protocol
 
 from anthropic import AsyncAnthropic
+from ollama import AsyncClient as OllamaAsyncClient
 
 from .config import settings
 from .curriculum import Curriculum
@@ -48,6 +49,31 @@ class ClaudeTutor:
             output_config={"effort": "low"},
         ) as stream:
             async for text in stream.text_stream:
+                yield text
+
+
+class OllamaTutor:
+    """Same prompts as ClaudeTutor, streamed from an Ollama model. The directive
+    still travels as a trailing system message (Nemotron honours it); thinking
+    is switched off so reasoning never reaches the speaker. Slightly warm
+    temperature so explanations don't read as canned."""
+
+    def __init__(self, client: OllamaAsyncClient | None = None, model: str | None = None):
+        self.client = client or OllamaAsyncClient(host=settings.ollama_host)
+        self.model = model or settings.ollama_model
+
+    async def stream(self, curriculum, session, directive) -> AsyncIterator[str]:
+        system = tree_block(curriculum)["text"] + "\n\n" + TUTOR_INSTRUCTIONS
+        messages = [{"role": "system", "content": system}, *_history(session), {"role": "system", "content": directive}]
+        async for chunk in await self.client.chat(
+            model=self.model,
+            messages=messages,
+            stream=True,
+            think=False,
+            options={"temperature": 0.3, "num_ctx": 32768, "num_predict": 400},
+        ):
+            text = chunk.message.content
+            if text:
                 yield text
 
 

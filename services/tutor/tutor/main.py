@@ -11,7 +11,7 @@ from fastapi.responses import StreamingResponse
 from .config import settings
 from .curriculum import load_curriculum
 from .ledger import mastery_view
-from .llm import get_grader, get_tutor
+from .llm import describe_grader, describe_tutor, get_grader, get_tutor
 from .models import (
     CreateSessionRequest,
     CreateSessionResponse,
@@ -35,7 +35,7 @@ app.add_middleware(
 
 @app.get("/health")
 async def health() -> dict:
-    return {"ok": True, "mock_llm": settings.mock_llm, "model": settings.model}
+    return {"ok": True, "mock_llm": settings.mock_llm, "grader": describe_grader(), "tutor": describe_tutor()}
 
 
 @app.post("/session", response_model=CreateSessionResponse)

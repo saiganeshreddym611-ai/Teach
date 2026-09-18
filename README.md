@@ -30,7 +30,9 @@ cp .env.example .env                        # then edit
 |---|---|
 | `ANTHROPIC_API_KEY` | Required for real grading/tutoring. |
 | `MOCK_LLM=1` | Run the whole loop with a deterministic keyword grader and template tutor — no key, no cost. Use this for UI work and demos without credentials. |
-| `TUTOR_MODEL` | Default `claude-opus-5`. Effort is tuned per route in code (grader `high`, tutor `low`). |
+| `TUTOR_MODEL` | Claude model for the tutor voice (and the grader when `GRADER_PROVIDER=claude`). Default `claude-opus-5`; effort tuned per route in code. |
+| `GRADER_PROVIDER` | `claude` (default) or `ollama`. The grader is the only component with a second backend - it is the part worth A/B-ing. |
+| `OLLAMA_MODEL`, `OLLAMA_HOST` | Used when `GRADER_PROVIDER=ollama`. Default `nemotron-3-super:cloud` on `http://localhost:11434`; the model must be pulled and `:cloud` models need `ollama signin`. |
 
 **2. Kiosk UI (Node 20+)**
 
@@ -49,10 +51,12 @@ From the Claude desktop app, `.claude/launch.json` defines both servers (`tutor-
 ```bash
 cd services/tutor
 .venv/Scripts/python -m pytest              # 26 tests: selector, ledger, sentinel filter, state machine, HTTP loop (mocked LLM)
-.venv/Scripts/python tests/evals/grader/run_evals.py --repeat 3   # grader eval set - needs ANTHROPIC_API_KEY
+.venv/Scripts/python tests/evals/grader/run_evals.py --repeat 3   # grader eval set against whichever GRADER_PROVIDER is configured
 ```
 
 The eval set (`tests/evals/grader/cases/`) is the thing that proves the grader is trustworthy: beginner vs advanced transcripts, a confident wrong answer, a stated misconception, vague name-dropping that must *not* verify, and STT-noisy speech that *must* verify. `--repeat 3` also checks that the same transcript gets the same verdicts every time. Every live grader call is captured to `tests/evals/grader/captured/` to seed more cases.
+
+Latest result - `nemotron-3-super:cloud` via Ollama, 2026-09-18: **28/28 expectations pass**, 0 schema retries, ~30 s median per call (cloud). The Claude grader has not been run yet (account had no API credits).
 
 ## How it works
 
@@ -66,11 +70,11 @@ TEACH_BACK ──(grade target node)──► VERIFIED → ledger event, next no
 nothing left ──► COMPLETE
 ```
 
-Two LLM roles, both `claude-opus-5`, sharing one prompt-cached prefix (the knowledge tree):
+Two LLM roles sharing one system prefix (the knowledge tree - prompt-cached on Claude):
 
 | Role | Call | Output | Why separate |
 |---|---|---|---|
-| **Grader** | `messages.parse()` structured output, effort `high` | per-node `VERIFIED / PARTIAL / GAP` + evidence quote | strict, deterministic, testable; anchored to each node's `rubric`, never free text |
+| **Grader** | Claude: `messages.parse()` structured output, effort `high`. Ollama: same prompt + JSON-schema `format`, `temperature=0`, one corrective retry | per-node `VERIFIED / PARTIAL / GAP` + evidence quote | strict, deterministic, testable; anchored to each node's `rubric`, never free text |
 | **Tutor voice** | `messages.stream()`, effort `low` | ≤120 spoken words, one question | fast and conversational; receives a per-turn *directive* as a mid-conversation system message |
 
 The **node selector** (`node_selector.py`) is pure code: walk L1 → L2 → L3 in document order, first node not VERIFIED. That is the pitch's "identify deepest missing node" step, deliberately not left to the model.
