@@ -1,0 +1,23 @@
+# python
+services/tutor/.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+services/tutor/.env
+services/tutor/tests/evals/grader/captured/*.json
+
+# node / next
+apps/web/node_modules/
+apps/web/.next/
+apps/web/out/
+apps/web/.env*.local
+apps/web/next-env.d.ts
+
+# os / editor
+.DS_Store
+Thumbs.db
+
+# local tooling state
+.claude/settings.local.json
+apps/web/tsconfig.tsbuildinfo

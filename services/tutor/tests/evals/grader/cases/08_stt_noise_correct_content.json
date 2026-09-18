@@ -1,0 +1,9 @@
+{
+  "name": "Speech-recognition noise around a correct SSP explanation must still verify",
+  "focus_node_id": "ind_as_115.step_4.ssp",
+  "prior_context": "Tutor asked: Explain the relative standalone selling price basis back to me, with an example.",
+  "transcript": "um so the stand alone selling price the S S P is basically the price we would sell that good or service for on its own separately to a customer uh the best evidence is an observable price when we actually sell it separately in similar circumstances and then we allocate the total transaction price in proportion to the S S Ps so like if software sells alone for sixty thousand and support alone for forty thousand and the bundle is ninety thousand we give fifty four thousand to software and thirty six to support",
+  "expect": {
+    "ind_as_115.step_4.ssp": "VERIFIED"
+  }
+}

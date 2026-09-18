@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "tutor-api",
+      "runtimeExecutable": "services/tutor/.venv/Scripts/python.exe",
+      "runtimeArgs": ["-m", "uvicorn", "tutor.main:app", "--app-dir", "services/tutor", "--port", "8000", "--reload"],
+      "port": 8000
+    },
+    {
+      "name": "web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "apps/web", "run", "dev"],
+      "port": 3000
+    }
+  ]
+}

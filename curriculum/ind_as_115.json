@@ -1,0 +1,608 @@
+{
+  "topic_id": "ind_as_115",
+  "subject": "Financial Reporting",
+  "standard": "Ind AS 115 — Revenue from Contracts with Customers",
+  "opening_prompt": "Welcome. Let's start with Ind AS 115, Revenue from Contracts with Customers. Tell me everything you know about it — the overall model, the steps, and any details or exceptions you remember. Take your time; speak for as long as you like.",
+  "nodes": [
+    {
+      "id": "ind_as_115.step_1",
+      "level": 1,
+      "parent": null,
+      "title": "Step 1 — Identify the contract with the customer",
+      "rubric": [
+        "Names identifying the contract as the first step of the five-step model",
+        "Describes a contract as an agreement creating enforceable rights and obligations (written, oral or implied)"
+      ],
+      "misconceptions": ["Thinking a contract must be written to be within scope"],
+      "canonical_explanation": "The five-step model begins by identifying a contract: an agreement between two or more parties that creates enforceable rights and obligations. Enforceability is a matter of law; the contract may be written, oral, or implied by customary business practice.",
+      "example": "A signed subscription agreement, or a telecom plan accepted online by clicking 'I agree', are both contracts for Ind AS 115 purposes.",
+      "source_refs": ["IndAS115.para.9-16"]
+    },
+    {
+      "id": "ind_as_115.step_1.criteria",
+      "level": 2,
+      "parent": "ind_as_115.step_1",
+      "title": "The five contract criteria",
+      "rubric": [
+        "States that all five criteria must be met before the contract is accounted for",
+        "Lists at least four of: parties approved and committed; rights identifiable; payment terms identifiable; commercial substance; collectability probable"
+      ],
+      "misconceptions": ["Treating collectability as a measurement issue rather than a recognition gate"],
+      "canonical_explanation": "A contract is accounted for only when all five criteria are met: the parties have approved it and are committed to perform; each party's rights to goods or services can be identified; payment terms can be identified; the contract has commercial substance; and it is probable that the entity will collect the consideration to which it is entitled.",
+      "example": "If a customer with a history of non-payment signs a contract and collection is not probable, no revenue is recognised even though goods have been shipped.",
+      "source_refs": ["IndAS115.para.9"]
+    },
+    {
+      "id": "ind_as_115.step_1.combination",
+      "level": 2,
+      "parent": "ind_as_115.step_1",
+      "title": "Combining contracts",
+      "rubric": [
+        "Explains that contracts entered at or near the same time with the same customer may need to be combined",
+        "Gives at least one combination indicator: negotiated as a package; price of one depends on the other; goods form a single performance obligation"
+      ],
+      "misconceptions": ["Combining only when contracts are formally cross-referenced"],
+      "canonical_explanation": "Two or more contracts entered into at or near the same time with the same customer (or related parties) are combined and treated as one when they are negotiated as a package with a single commercial objective, when the consideration in one depends on the price or performance of the other, or when the goods or services promised are a single performance obligation.",
+      "example": "A software licence sold on Monday and an implementation contract for that same software sold on Tuesday to the same customer at a bundled discount are combined.",
+      "source_refs": ["IndAS115.para.17"]
+    },
+    {
+      "id": "ind_as_115.step_1.modification",
+      "level": 3,
+      "parent": "ind_as_115.step_1",
+      "title": "Contract modifications",
+      "rubric": [
+        "Identifies when a modification is a separate contract: adds distinct goods/services at a price reflecting standalone selling price",
+        "Distinguishes prospective treatment (remaining goods distinct) from cumulative catch-up (remaining goods not distinct)"
+      ],
+      "misconceptions": ["Always applying cumulative catch-up to every modification"],
+      "canonical_explanation": "A modification is a separate contract if it adds distinct goods or services priced at their standalone selling prices. Otherwise, if the remaining goods are distinct from those already transferred, the original contract is terminated and a new one created (prospective). If they are not distinct, the modification is accounted for as part of the existing contract with a cumulative catch-up adjustment to revenue.",
+      "example": "Adding 20 more identical units to a 100-unit order at the normal unit price is a separate contract; changing the specification of a half-built machine is a cumulative catch-up.",
+      "source_refs": ["IndAS115.para.18-21"]
+    },
+    {
+      "id": "ind_as_115.step_1.criteria_not_met",
+      "level": 3,
+      "parent": "ind_as_115.step_1",
+      "title": "Consideration received when criteria are not met",
+      "rubric": [
+        "States that consideration received is recognised as a liability, not revenue, until the criteria are met",
+        "Identifies when that liability can be released to revenue: no remaining obligations and consideration is non-refundable, or contract terminated"
+      ],
+      "misconceptions": ["Recognising cash received as revenue because it is non-refundable"],
+      "canonical_explanation": "If the five criteria are not met, any consideration received is recognised as a liability. It is recognised as revenue only when the entity has no remaining obligations and substantially all consideration has been received and is non-refundable, or when the contract has been terminated and the consideration is non-refundable.",
+      "example": "A deposit collected from a customer whose creditworthiness makes collection improbable sits as a liability until the goods are delivered and the deposit becomes non-refundable.",
+      "source_refs": ["IndAS115.para.14-16"]
+    },
+
+    {
+      "id": "ind_as_115.step_2",
+      "level": 1,
+      "parent": null,
+      "title": "Step 2 — Identify the performance obligations",
+      "rubric": [
+        "Names identifying performance obligations as the second step",
+        "Describes a performance obligation as a promise to transfer a distinct good or service (or series of distinct goods/services)"
+      ],
+      "misconceptions": ["Treating every line item on an invoice as a separate performance obligation"],
+      "canonical_explanation": "At contract inception the entity identifies each promise to transfer to the customer either a distinct good or service, or a series of distinct goods or services that are substantially the same and have the same pattern of transfer. Each such promise is a performance obligation, the unit of account for revenue recognition.",
+      "example": "A mobile handset plus a 24-month network service are typically two performance obligations.",
+      "source_refs": ["IndAS115.para.22-30"]
+    },
+    {
+      "id": "ind_as_115.step_2.distinct",
+      "level": 2,
+      "parent": "ind_as_115.step_2",
+      "title": "The two-part 'distinct' test",
+      "rubric": [
+        "States both conditions: capable of being distinct (customer can benefit on its own or with readily available resources) AND distinct within the context of the contract (separately identifiable)",
+        "Explains that both must be satisfied"
+      ],
+      "misconceptions": ["Stopping at 'capable of being distinct' and ignoring the contract context"],
+      "canonical_explanation": "A good or service is distinct only if (a) the customer can benefit from it on its own or together with other readily available resources, and (b) the promise to transfer it is separately identifiable from other promises in the contract. Both criteria must be met.",
+      "example": "Bricks and construction labour are each capable of being distinct, but in a contract to build a wall they are not separately identifiable, so they form one performance obligation.",
+      "source_refs": ["IndAS115.para.27"]
+    },
+    {
+      "id": "ind_as_115.step_2.series",
+      "level": 2,
+      "parent": "ind_as_115.step_2",
+      "title": "Series of distinct goods or services",
+      "rubric": [
+        "Explains that a series of substantially-the-same goods/services with the same pattern of transfer is a single performance obligation",
+        "Notes the series must be satisfied over time with the same measure of progress"
+      ],
+      "misconceptions": ["Treating each day of a cleaning contract as a separate performance obligation"],
+      "canonical_explanation": "A series of distinct goods or services that are substantially the same and transfer with the same pattern is accounted for as one performance obligation, provided each would be satisfied over time and the same method measures progress. This simplifies accounting for repetitive services.",
+      "example": "A 12-month office cleaning contract is a single performance obligation, not 250 daily ones.",
+      "source_refs": ["IndAS115.para.22(b)", "IndAS115.para.23"]
+    },
+    {
+      "id": "ind_as_115.step_2.separately_identifiable",
+      "level": 3,
+      "parent": "ind_as_115.step_2",
+      "title": "Indicators that promises are not separately identifiable",
+      "rubric": [
+        "Gives at least two indicators: significant integration service; one good significantly modifies or customises another; goods are highly interdependent or interrelated"
+      ],
+      "misconceptions": ["Assuming customisation always creates a separate performance obligation"],
+      "canonical_explanation": "Promises are not separately identifiable when the entity provides a significant service of integrating them into a combined output, when one significantly modifies or customises another, or when they are highly interdependent or interrelated such that each significantly affects the other.",
+      "example": "Designing and building a bespoke production line: the design significantly affects the build, so they are one performance obligation.",
+      "source_refs": ["IndAS115.para.29"]
+    },
+    {
+      "id": "ind_as_115.step_2.warranties",
+      "level": 3,
+      "parent": "ind_as_115.step_2",
+      "title": "Assurance-type vs service-type warranties",
+      "rubric": [
+        "Distinguishes assurance warranties (product works as specified; Ind AS 37 provision) from service warranties (additional service; separate performance obligation)",
+        "Mentions that a warranty the customer can purchase separately is a service-type warranty"
+      ],
+      "misconceptions": ["Deferring revenue for all warranties"],
+      "canonical_explanation": "An assurance-type warranty only promises that the product complies with agreed specifications; it is not a performance obligation and is accounted for as a provision under Ind AS 37. A service-type warranty provides a service beyond that assurance (or can be purchased separately) and is a separate performance obligation to which transaction price is allocated.",
+      "example": "A standard one-year defect warranty on a laptop is assurance-type; an optional three-year accidental damage cover is service-type.",
+      "source_refs": ["IndAS115.para.B28-B33"]
+    },
+    {
+      "id": "ind_as_115.step_2.material_rights",
+      "level": 3,
+      "parent": "ind_as_115.step_2",
+      "title": "Customer options and material rights",
+      "rubric": [
+        "Explains that an option giving the customer a material right (e.g. a discount it would not otherwise receive) is a separate performance obligation",
+        "States that transaction price is allocated to the option based on its estimated standalone selling price"
+      ],
+      "misconceptions": ["Ignoring loyalty points because they are 'free'"],
+      "canonical_explanation": "When a contract grants the customer an option to acquire additional goods or services, that option is a separate performance obligation if it provides a material right the customer would not receive without entering the contract. A portion of the transaction price is allocated to the option and recognised when it is exercised or expires.",
+      "example": "Loyalty points earned on a purchase that can be redeemed for a discount on future purchases are a material right.",
+      "source_refs": ["IndAS115.para.B39-B43"]
+    },
+    {
+      "id": "ind_as_115.step_2.principal_agent",
+      "level": 3,
+      "parent": "ind_as_115.step_2",
+      "title": "Principal versus agent",
+      "rubric": [
+        "States that the test is whether the entity controls the good or service before it is transferred to the customer",
+        "Explains gross (principal) vs net (agent) presentation",
+        "Gives at least one indicator: primary responsibility, inventory risk, pricing discretion"
+      ],
+      "misconceptions": ["Using credit risk or legal form as the deciding factor"],
+      "canonical_explanation": "An entity is a principal if it controls the specified good or service before it is transferred to the customer and recognises revenue gross. If it merely arranges for another party to provide it, it is an agent and recognises only its fee or commission. Indicators of control include primary responsibility for fulfilment, inventory risk, and discretion in setting prices.",
+      "example": "An online marketplace that never takes title to goods and earns a fixed commission is an agent.",
+      "source_refs": ["IndAS115.para.B34-B38"]
+    },
+
+    {
+      "id": "ind_as_115.step_3",
+      "level": 1,
+      "parent": null,
+      "title": "Step 3 — Determine the transaction price",
+      "rubric": [
+        "Names determining the transaction price as the third step",
+        "Defines it as the consideration the entity expects to be entitled to, excluding amounts collected for third parties (e.g. GST)"
+      ],
+      "misconceptions": ["Including taxes collected on behalf of the government in the transaction price"],
+      "canonical_explanation": "The transaction price is the amount of consideration to which the entity expects to be entitled in exchange for transferring promised goods or services, excluding amounts collected on behalf of third parties. It may include fixed amounts, variable amounts, or both, and is adjusted for financing, non-cash consideration and consideration payable to the customer.",
+      "example": "A ₹1,18,000 invoice including ₹18,000 GST has a transaction price of ₹1,00,000.",
+      "source_refs": ["IndAS115.para.46-49"]
+    },
+    {
+      "id": "ind_as_115.step_3.variable_consideration",
+      "level": 2,
+      "parent": "ind_as_115.step_3",
+      "title": "Estimating variable consideration",
+      "rubric": [
+        "Gives examples of variable consideration (discounts, rebates, refunds, penalties, bonuses, contingencies)",
+        "Names both estimation methods: expected value and most likely amount",
+        "Explains which method suits which situation (many similar contracts vs binary outcomes)"
+      ],
+      "misconceptions": ["Choosing the method freely rather than the one that better predicts the amount"],
+      "canonical_explanation": "Variable consideration — discounts, rebates, refunds, credits, price concessions, incentives, performance bonuses, penalties — is estimated using either the expected value (probability-weighted sum, suited to many contracts with similar characteristics) or the most likely amount (suited to contracts with few possible outcomes). The entity uses whichever better predicts the amount it will be entitled to, applied consistently.",
+      "example": "A construction bonus of ₹10 lakh payable only if completed by 31 March is a binary outcome: use the most likely amount.",
+      "source_refs": ["IndAS115.para.50-55"]
+    },
+    {
+      "id": "ind_as_115.step_3.constraint",
+      "level": 2,
+      "parent": "ind_as_115.step_3",
+      "title": "Constraint on variable consideration",
+      "rubric": [
+        "States that variable consideration is included only to the extent it is highly probable that a significant reversal will not occur",
+        "Gives at least one factor increasing reversal risk: outside entity's influence; long time until resolution; limited experience; broad range of outcomes"
+      ],
+      "misconceptions": ["Recognising the full expected value regardless of uncertainty"],
+      "canonical_explanation": "An estimate of variable consideration is included in the transaction price only to the extent that it is highly probable that a significant reversal of cumulative revenue will not occur when the uncertainty is resolved. Factors that increase reversal risk include susceptibility to factors outside the entity's influence, a long period before resolution, limited experience with similar contracts, a practice of granting concessions, and a broad range of possible amounts.",
+      "example": "A milestone payment dependent on regulatory approval outside the entity's control is typically constrained to zero until approval.",
+      "source_refs": ["IndAS115.para.56-58"]
+    },
+    {
+      "id": "ind_as_115.step_3.financing",
+      "level": 2,
+      "parent": "ind_as_115.step_3",
+      "title": "Significant financing component",
+      "rubric": [
+        "Explains that the transaction price is adjusted for the time value of money when timing of payment provides a significant financing benefit",
+        "Mentions the practical expedient: no adjustment if the period between transfer and payment is one year or less",
+        "Identifies that the effect is presented as interest income/expense, separate from revenue"
+      ],
+      "misconceptions": ["Adjusting every deferred payment regardless of period or purpose"],
+      "canonical_explanation": "If the timing of payments gives the customer or the entity a significant benefit of financing, the transaction price is adjusted to reflect the cash selling price at the point of transfer, using a discount rate that reflects a separate financing transaction between the parties. The financing effect is presented as interest, not revenue. As a practical expedient, no adjustment is made when the gap between transfer and payment is one year or less.",
+      "example": "Goods delivered today with payment due in three years at zero interest: revenue is the discounted amount and the unwinding is interest income.",
+      "source_refs": ["IndAS115.para.60-65"]
+    },
+    {
+      "id": "ind_as_115.step_3.non_cash",
+      "level": 3,
+      "parent": "ind_as_115.step_3",
+      "title": "Non-cash consideration",
+      "rubric": [
+        "States that non-cash consideration is measured at fair value at contract inception",
+        "Explains the fallback to standalone selling price when fair value cannot be reasonably estimated"
+      ],
+      "misconceptions": ["Remeasuring non-cash consideration for changes in its fair value after inception"],
+      "canonical_explanation": "Consideration in a form other than cash (shares, goods, services) is measured at fair value at contract inception. If fair value cannot be reasonably estimated, the entity measures it indirectly by reference to the standalone selling price of the goods or services promised. Subsequent changes in the fair value of the non-cash asset due to its form are not part of the transaction price.",
+      "example": "Receiving 1,000 shares of a listed company for consulting services: revenue equals the shares' fair value on the contract date.",
+      "source_refs": ["IndAS115.para.66-69"]
+    },
+    {
+      "id": "ind_as_115.step_3.payable_to_customer",
+      "level": 3,
+      "parent": "ind_as_115.step_3",
+      "title": "Consideration payable to a customer",
+      "rubric": [
+        "States that amounts payable to a customer reduce the transaction price unless they are payment for a distinct good or service received from the customer",
+        "Explains that revenue is reduced at the later of when revenue is recognised or the payment is promised"
+      ],
+      "misconceptions": ["Expensing all slotting fees or coupons as marketing cost"],
+      "canonical_explanation": "Consideration payable to a customer (cash, credits, coupons, vouchers) is treated as a reduction of the transaction price unless it is in exchange for a distinct good or service the customer transfers to the entity. Any excess over the fair value of that distinct good or service also reduces the transaction price. The reduction is recognised at the later of when the related revenue is recognised and when the entity pays or promises to pay.",
+      "example": "Slotting fees paid to a retailer for shelf space reduce revenue; they are not a marketing expense.",
+      "source_refs": ["IndAS115.para.70-72"]
+    },
+    {
+      "id": "ind_as_115.step_3.refund_liability",
+      "level": 3,
+      "parent": "ind_as_115.step_3",
+      "title": "Sales with a right of return",
+      "rubric": [
+        "Explains that revenue is recognised only for goods not expected to be returned",
+        "Identifies the refund liability and the asset for the right to recover returned goods"
+      ],
+      "misconceptions": ["Recognising full revenue and a provision for returns as an expense"],
+      "canonical_explanation": "For sales with a right of return, the entity recognises revenue for the transferred goods it expects not to be returned (using the variable consideration guidance), a refund liability for the consideration it expects to refund, and an asset (with a corresponding adjustment to cost of sales) for its right to recover products from customers.",
+      "example": "Selling 100 units at ₹1,000 with 5 expected returns: revenue ₹95,000, refund liability ₹5,000, and a return asset at the cost of 5 units.",
+      "source_refs": ["IndAS115.para.B20-B27"]
+    },
+
+    {
+      "id": "ind_as_115.step_4",
+      "level": 1,
+      "parent": null,
+      "title": "Step 4 — Allocate the transaction price to performance obligations",
+      "rubric": [
+        "Names allocation as the fourth step",
+        "States the objective: allocate an amount to each performance obligation that depicts the consideration the entity expects for that obligation"
+      ],
+      "misconceptions": ["Allocating on contract-stated prices or on cost"],
+      "canonical_explanation": "The transaction price is allocated to each performance obligation in an amount that depicts the consideration the entity expects to be entitled to in exchange for transferring that good or service. The default basis is the relative standalone selling price of each obligation at contract inception.",
+      "example": "A ₹1,000 bundle of a phone (SSP ₹900) and a case (SSP ₹100) allocates ₹900 and ₹100 respectively; if the bundle costs ₹800, the discount is spread pro rata.",
+      "source_refs": ["IndAS115.para.73-75"]
+    },
+    {
+      "id": "ind_as_115.step_4.ssp",
+      "level": 2,
+      "parent": "ind_as_115.step_4",
+      "title": "Relative standalone selling price basis",
+      "rubric": [
+        "Defines standalone selling price as the price at which the entity would sell the good or service separately",
+        "Explains that observable prices from separate sales are the best evidence",
+        "States that allocation is proportional to standalone selling prices"
+      ],
+      "misconceptions": ["Using the list price as SSP even when goods never sell at list"],
+      "canonical_explanation": "The standalone selling price is the price at which an entity would sell a promised good or service separately to a customer. The best evidence is an observable price from selling it separately in similar circumstances to similar customers. The transaction price is allocated in proportion to these standalone selling prices.",
+      "example": "If software is regularly sold alone at ₹60,000 and support alone at ₹40,000, a ₹90,000 bundle allocates ₹54,000 to software and ₹36,000 to support.",
+      "source_refs": ["IndAS115.para.76-77"]
+    },
+    {
+      "id": "ind_as_115.step_4.ssp_estimation",
+      "level": 2,
+      "parent": "ind_as_115.step_4",
+      "title": "Estimating standalone selling price when not observable",
+      "rubric": [
+        "Names at least two estimation approaches: adjusted market assessment; expected cost plus a margin; residual approach",
+        "States that the residual approach is permitted only when the price is highly variable or uncertain"
+      ],
+      "misconceptions": ["Using the residual approach as a default"],
+      "canonical_explanation": "When a standalone selling price is not directly observable, the entity estimates it using all reasonably available information. Suitable methods include the adjusted market assessment approach (what customers in the market would pay), the expected cost plus a margin approach, and — only when the selling price is highly variable or uncertain — the residual approach (total transaction price less observable SSPs of the other obligations).",
+      "example": "A new, never-sold-separately software module bundled with hardware may use expected cost plus margin; a licence with wildly varying prices may use the residual approach.",
+      "source_refs": ["IndAS115.para.78-80"]
+    },
+    {
+      "id": "ind_as_115.step_4.discount_allocation",
+      "level": 3,
+      "parent": "ind_as_115.step_4",
+      "title": "Allocating a discount",
+      "rubric": [
+        "States that a bundle discount is allocated proportionately to all performance obligations by default",
+        "Explains the exception: allocate entirely to some obligations when observable evidence shows the discount relates only to them"
+      ],
+      "misconceptions": ["Allocating the discount to whichever obligation is recognised last"],
+      "canonical_explanation": "A discount (sum of SSPs exceeds the transaction price) is allocated proportionately to all performance obligations, unless there is observable evidence that the entire discount relates to only some of them — for example, the entity regularly sells that subset together at the discounted price. In that case the discount is allocated to those obligations only, before applying any residual approach.",
+      "example": "If products A and B are regularly sold together at ₹1,500 (SSPs ₹1,000 each) and product C is added at its SSP, the ₹500 discount is allocated only to A and B.",
+      "source_refs": ["IndAS115.para.81-83"]
+    },
+    {
+      "id": "ind_as_115.step_4.variable_allocation",
+      "level": 3,
+      "parent": "ind_as_115.step_4",
+      "title": "Allocating variable consideration to specific obligations",
+      "rubric": [
+        "Explains that variable consideration may be allocated entirely to one performance obligation (or distinct good in a series) when both conditions are met",
+        "States the two conditions: the variable terms relate specifically to that obligation, and the allocation is consistent with the allocation objective"
+      ],
+      "misconceptions": ["Always spreading a performance bonus across all obligations"],
+      "canonical_explanation": "Variable consideration may be attributed entirely to one performance obligation, or to one distinct good or service in a series, if the terms of the variable payment relate specifically to that obligation and allocating it entirely is consistent with the objective of depicting the consideration for that obligation.",
+      "example": "A bonus payable only for on-time completion of the installation phase is allocated entirely to the installation performance obligation.",
+      "source_refs": ["IndAS115.para.84-86"]
+    },
+
+    {
+      "id": "ind_as_115.step_5",
+      "level": 1,
+      "parent": null,
+      "title": "Step 5 — Recognise revenue when (or as) performance obligations are satisfied",
+      "rubric": [
+        "Names recognition on satisfaction of performance obligations as the fifth step",
+        "States that satisfaction occurs when control of the good or service transfers to the customer",
+        "Distinguishes satisfaction over time from satisfaction at a point in time"
+      ],
+      "misconceptions": ["Recognising revenue on invoicing or cash receipt"],
+      "canonical_explanation": "Revenue is recognised when, or as, the entity satisfies a performance obligation by transferring the promised good or service — that is, when the customer obtains control. Each obligation is assessed at inception as satisfied either over time (revenue recognised as progress is made) or at a point in time (revenue recognised when control passes).",
+      "example": "Revenue on a three-year construction contract is recognised over time; revenue on a retail sale is recognised at the point of sale.",
+      "source_refs": ["IndAS115.para.31-34"]
+    },
+    {
+      "id": "ind_as_115.step_5.control",
+      "level": 2,
+      "parent": "ind_as_115.step_5",
+      "title": "The concept of control",
+      "rubric": [
+        "Defines control as the ability to direct the use of, and obtain substantially all remaining benefits from, the asset",
+        "Notes that control includes the ability to prevent others from directing use and obtaining benefits"
+      ],
+      "misconceptions": ["Equating control with transfer of risks and rewards alone"],
+      "canonical_explanation": "Control of an asset is the ability to direct its use and obtain substantially all of its remaining benefits, including the ability to prevent other entities from doing so. Benefits are potential cash flows obtained directly or indirectly. Control, not risks and rewards, is the trigger for revenue recognition.",
+      "example": "A customer who has taken delivery of a machine and can use it, resell it or pledge it controls it even if the seller retains legal title as security.",
+      "source_refs": ["IndAS115.para.33"]
+    },
+    {
+      "id": "ind_as_115.step_5.over_time_criteria",
+      "level": 2,
+      "parent": "ind_as_115.step_5",
+      "title": "Criteria for satisfaction over time",
+      "rubric": [
+        "Lists all three criteria: customer simultaneously receives and consumes benefits; entity creates or enhances an asset the customer controls; asset has no alternative use AND entity has an enforceable right to payment for performance to date",
+        "States that meeting any one criterion means over-time recognition"
+      ],
+      "misconceptions": ["Requiring all three criteria; forgetting the 'right to payment' half of the third criterion"],
+      "canonical_explanation": "A performance obligation is satisfied over time if any one of three criteria is met: (a) the customer simultaneously receives and consumes the benefits as the entity performs (routine services); (b) the entity's performance creates or enhances an asset the customer controls as it is created (building on the customer's land); or (c) the entity's performance does not create an asset with an alternative use to the entity and the entity has an enforceable right to payment for performance completed to date.",
+      "example": "Building a customised ship with no alternative use, under a contract that entitles the builder to cost plus margin if the customer cancels, is recognised over time under criterion (c).",
+      "source_refs": ["IndAS115.para.35-37"]
+    },
+    {
+      "id": "ind_as_115.step_5.point_in_time_indicators",
+      "level": 2,
+      "parent": "ind_as_115.step_5",
+      "title": "Indicators of control transfer at a point in time",
+      "rubric": [
+        "Gives at least three indicators: present right to payment; legal title; physical possession; risks and rewards of ownership; customer acceptance",
+        "Explains that these are indicators, not a checklist requiring all to be met"
+      ],
+      "misconceptions": ["Treating physical delivery as conclusive"],
+      "canonical_explanation": "If an obligation is not satisfied over time, it is satisfied at the point in time when control passes. Indicators include: the entity has a present right to payment; the customer has legal title; the customer has physical possession; the customer has the significant risks and rewards of ownership; and the customer has accepted the asset. No single indicator is determinative.",
+      "example": "Goods shipped FOB destination: control usually passes on delivery, not on dispatch.",
+      "source_refs": ["IndAS115.para.38"]
+    },
+    {
+      "id": "ind_as_115.step_5.measuring_progress",
+      "level": 2,
+      "parent": "ind_as_115.step_5",
+      "title": "Measuring progress towards complete satisfaction",
+      "rubric": [
+        "Names output methods and input methods and gives an example of each",
+        "States that a single method is applied consistently to each performance obligation",
+        "Mentions that revenue is recognised only to the extent of recoverable costs when progress cannot be reasonably measured"
+      ],
+      "misconceptions": ["Switching between methods mid-contract to smooth profit"],
+      "canonical_explanation": "For over-time obligations, progress is measured using either output methods (surveys, milestones, units delivered) or input methods (costs incurred, labour hours, time elapsed) relative to total expected inputs. A single method is applied consistently to similar obligations and updated each period. If progress cannot be reasonably measured but costs are expected to be recovered, revenue is recognised only to the extent of costs incurred.",
+      "example": "A road-building contract with ₹40 crore costs incurred out of ₹100 crore expected recognises 40% of revenue under the cost-to-cost input method.",
+      "source_refs": ["IndAS115.para.39-45"]
+    },
+    {
+      "id": "ind_as_115.step_5.right_to_payment",
+      "level": 3,
+      "parent": "ind_as_115.step_5",
+      "title": "Enforceable right to payment for performance to date",
+      "rubric": [
+        "Explains the right must compensate for performance to date (approximately cost plus a reasonable margin), not just reimburse costs",
+        "States that the right must exist at all times throughout the contract if the customer terminates for reasons other than the entity's failure"
+      ],
+      "misconceptions": ["Accepting a right to recover only costs, or a right that applies only after a milestone"],
+      "canonical_explanation": "For the third over-time criterion, the entity must at all times be entitled to an amount that at least compensates it for performance completed to date if the customer terminates for reasons other than the entity's failure to perform. That amount should approximate the selling price of the work done — recovery of costs plus a reasonable margin — and the right must be enforceable under contract terms and applicable law.",
+      "example": "A contract that allows the customer to cancel and pay only a 10% deposit forfeiture does not give an enforceable right to payment for performance to date.",
+      "source_refs": ["IndAS115.para.B9-B13"]
+    },
+    {
+      "id": "ind_as_115.step_5.uninstalled_materials",
+      "level": 3,
+      "parent": "ind_as_115.step_5",
+      "title": "Uninstalled materials and wasted inputs in input methods",
+      "rubric": [
+        "Explains that costs not contributing to progress (wasted materials, inefficiencies) are excluded from the cost-to-cost measure",
+        "Explains the uninstalled materials adjustment: recognise revenue equal to cost (zero margin) when control passes but the goods are not yet installed"
+      ],
+      "misconceptions": ["Including all costs incurred in the progress calculation"],
+      "canonical_explanation": "When using an input method, costs that do not depict the entity's progress — such as abnormal wastage — are excluded. When the customer obtains control of significant uninstalled materials before installation, the entity recognises revenue only to the extent of the cost of those materials, with no margin, and excludes them from measuring progress on the remaining work.",
+      "example": "Elevators delivered to a construction site but not yet installed: revenue recognised equals their cost; margin is earned as installation proceeds.",
+      "source_refs": ["IndAS115.para.B18-B19"]
+    },
+    {
+      "id": "ind_as_115.step_5.bill_and_hold",
+      "level": 3,
+      "parent": "ind_as_115.step_5",
+      "title": "Bill-and-hold arrangements",
+      "rubric": [
+        "Lists the conditions for recognising revenue while goods remain with the seller: substantive reason; goods identified separately; ready for physical transfer; entity cannot use or redirect the goods",
+        "Notes that custodial services may be a separate performance obligation"
+      ],
+      "misconceptions": ["Recognising revenue on invoicing whenever the customer requests delayed delivery"],
+      "canonical_explanation": "In a bill-and-hold arrangement the entity bills the customer but retains physical possession. Control may still pass if all of the following are met: the reason is substantive (e.g. customer requested it); the product is identified separately as the customer's; it is ready for physical transfer; and the entity cannot use it or direct it to another customer. The entity should consider whether it has a separate custodial performance obligation.",
+      "example": "A customer buys turbines but asks the manufacturer to store them until its site is ready; if the turbines are set aside and ready to ship, revenue is recognised on billing.",
+      "source_refs": ["IndAS115.para.B79-B82"]
+    },
+    {
+      "id": "ind_as_115.step_5.consignment",
+      "level": 3,
+      "parent": "ind_as_115.step_5",
+      "title": "Consignment arrangements",
+      "rubric": [
+        "States that revenue is not recognised on delivery to a consignee because control has not transferred",
+        "Gives at least one indicator: entity controls the product until a specified event (sale to end customer); entity can require return or transfer elsewhere; dealer has no unconditional obligation to pay"
+      ],
+      "misconceptions": ["Treating delivery to a dealer as a sale"],
+      "canonical_explanation": "When a product is delivered to a dealer or distributor under a consignment arrangement, the entity retains control and does not recognise revenue on delivery. Indicators include: the entity controls the product until a specified event such as sale to an end customer; the entity can require return of the product or transfer it to a third party; and the dealer has no unconditional obligation to pay.",
+      "example": "Cars delivered to a dealership that can return unsold vehicles and pays only on retail sale are on consignment.",
+      "source_refs": ["IndAS115.para.B77-B78"]
+    },
+    {
+      "id": "ind_as_115.step_5.repurchase",
+      "level": 3,
+      "parent": "ind_as_115.step_5",
+      "title": "Repurchase agreements",
+      "rubric": [
+        "Distinguishes forward/call options (entity must or can repurchase) from put options (customer can require repurchase)",
+        "Explains forward/call: lease if repurchase price below original price; financing arrangement if at or above",
+        "Explains put: depends on whether the customer has a significant economic incentive to exercise"
+      ],
+      "misconceptions": ["Recognising a sale whenever legal title has passed, ignoring the repurchase right"],
+      "canonical_explanation": "If the entity has an obligation (forward) or right (call) to repurchase the asset, the customer does not obtain control: the arrangement is a lease if the repurchase price is lower than the original selling price, or a financing arrangement if equal or higher. If the customer has a put option, the entity assesses whether the customer has a significant economic incentive to exercise it; if so, it is a lease or financing; if not, it is a sale with a right of return.",
+      "example": "Selling inventory for ₹10 lakh with an obligation to buy it back in a year for ₹11 lakh is a financing arrangement, not a sale.",
+      "source_refs": ["IndAS115.para.B64-B76"]
+    },
+    {
+      "id": "ind_as_115.step_5.licences",
+      "level": 3,
+      "parent": "ind_as_115.step_5",
+      "title": "Licences of intellectual property",
+      "rubric": [
+        "Distinguishes a right to access IP (over time) from a right to use IP (point in time)",
+        "Explains the criteria for 'right to access': entity's activities significantly affect the IP; customer is exposed to those activities; activities do not transfer a separate good/service",
+        "Mentions the sales- or usage-based royalty exception: recognise when the sale or usage occurs"
+      ],
+      "misconceptions": ["Recognising all licence revenue upfront"],
+      "canonical_explanation": "A distinct licence is either a right to access the entity's IP as it exists throughout the licence period (satisfied over time) or a right to use the IP as it exists at the point in time the licence is granted (satisfied at a point in time). It is a right to access when the entity undertakes activities that significantly affect the IP, the customer is directly exposed to those activities, and they do not transfer a separate good or service. Sales- or usage-based royalties on IP licences are recognised only when the subsequent sale or usage occurs.",
+      "example": "A franchise licence where the franchisor keeps developing the brand is a right to access; a licence to a completed film is a right to use.",
+      "source_refs": ["IndAS115.para.B52-B63"]
+    },
+
+    {
+      "id": "ind_as_115.cross_cutting",
+      "level": 1,
+      "parent": null,
+      "title": "Beyond the five steps — contract costs, presentation and disclosure",
+      "rubric": [
+        "Mentions that Ind AS 115 also governs contract costs (obtaining and fulfilling) and balance-sheet presentation (contract assets/liabilities)"
+      ],
+      "misconceptions": ["Believing the standard covers only the income statement"],
+      "canonical_explanation": "In addition to the five-step model, Ind AS 115 sets out when costs of obtaining and fulfilling a contract are capitalised, how contract balances are presented as contract assets, receivables and contract liabilities, and what must be disclosed about revenue, contract balances and judgements.",
+      "example": "A telecom's sales commissions and its deferred revenue from prepaid plans are both governed by Ind AS 115.",
+      "source_refs": ["IndAS115.para.91-129"]
+    },
+    {
+      "id": "ind_as_115.cross_cutting.costs_to_obtain",
+      "level": 2,
+      "parent": "ind_as_115.cross_cutting",
+      "title": "Incremental costs of obtaining a contract",
+      "rubric": [
+        "States that incremental costs (would not have been incurred if the contract were not obtained, e.g. sales commissions) are capitalised if expected to be recovered",
+        "Mentions the practical expedient to expense when the amortisation period would be one year or less",
+        "Notes that costs incurred regardless of winning the contract (e.g. bid costs) are expensed"
+      ],
+      "misconceptions": ["Capitalising all costs of tendering"],
+      "canonical_explanation": "Incremental costs of obtaining a contract — those the entity would not have incurred had it not obtained the contract, such as sales commissions — are recognised as an asset if the entity expects to recover them. Costs incurred regardless of whether the contract is obtained, such as bid preparation, are expensed. As a practical expedient, the entity may expense costs whose amortisation period would be one year or less.",
+      "example": "A ₹50,000 commission paid on signing a three-year service contract is capitalised and amortised over three years; the ₹20,000 spent preparing the proposal is expensed.",
+      "source_refs": ["IndAS115.para.91-94"]
+    },
+    {
+      "id": "ind_as_115.cross_cutting.costs_to_fulfil",
+      "level": 2,
+      "parent": "ind_as_115.cross_cutting",
+      "title": "Costs to fulfil a contract",
+      "rubric": [
+        "States that other standards (Ind AS 2, 16, 38) apply first; Ind AS 115 applies only to costs not in their scope",
+        "Lists the three capitalisation criteria: relate directly to a contract; generate or enhance resources used to satisfy obligations; expected to be recovered"
+      ],
+      "misconceptions": ["Capitalising general and administrative costs"],
+      "canonical_explanation": "If costs to fulfil a contract are within the scope of another standard (inventories, PPE, intangibles), that standard applies. Otherwise they are capitalised only if they relate directly to a contract, generate or enhance resources that will be used to satisfy performance obligations, and are expected to be recovered. General and administrative costs, wasted materials, and costs of past performance are expensed.",
+      "example": "Set-up costs for a dedicated outsourcing data centre that will serve a specific five-year contract are capitalised as fulfilment costs.",
+      "source_refs": ["IndAS115.para.95-98"]
+    },
+    {
+      "id": "ind_as_115.cross_cutting.presentation",
+      "level": 2,
+      "parent": "ind_as_115.cross_cutting",
+      "title": "Contract assets, receivables and contract liabilities",
+      "rubric": [
+        "Defines a contract liability as consideration received (or due) before performance",
+        "Distinguishes a contract asset (right to consideration conditional on something other than passage of time) from a receivable (unconditional right)"
+      ],
+      "misconceptions": ["Recording all unbilled revenue as receivables"],
+      "canonical_explanation": "When either party has performed, the entity presents a contract asset or liability. A contract liability arises when the customer pays (or payment is due) before the entity performs. A contract asset is the entity's right to consideration for goods already transferred when that right is conditional on something other than the passage of time — typically further performance. A receivable is an unconditional right to consideration, subject only to the passage of time, and is accounted for under Ind AS 109.",
+      "example": "Revenue recognised on a milestone that cannot be billed until a later milestone is also reached is a contract asset, not a receivable.",
+      "source_refs": ["IndAS115.para.105-109"]
+    },
+    {
+      "id": "ind_as_115.cross_cutting.amortisation_impairment",
+      "level": 3,
+      "parent": "ind_as_115.cross_cutting",
+      "title": "Amortisation and impairment of contract cost assets",
+      "rubric": [
+        "States that capitalised contract costs are amortised consistently with the transfer of the related goods or services (which may extend beyond the initial contract term for anticipated renewals)",
+        "Explains the impairment test: carrying amount exceeds remaining consideration expected less directly related costs not yet expensed"
+      ],
+      "misconceptions": ["Amortising commissions straight-line over the initial contract only, ignoring expected renewals"],
+      "canonical_explanation": "Assets recognised for contract costs are amortised on a systematic basis consistent with the pattern of transfer of the goods or services to which they relate, including anticipated renewals where the asset relates to them. An impairment loss is recognised when the carrying amount exceeds the remaining amount of consideration the entity expects to receive less the costs that relate directly to providing those goods or services and have not been expensed.",
+      "example": "A commission on a one-year contract expected to renew for three more years is amortised over four years.",
+      "source_refs": ["IndAS115.para.99-104"]
+    },
+    {
+      "id": "ind_as_115.cross_cutting.disclosure",
+      "level": 3,
+      "parent": "ind_as_115.cross_cutting",
+      "title": "Disclosure objectives",
+      "rubric": [
+        "States the objective: enable users to understand the nature, amount, timing and uncertainty of revenue and cash flows",
+        "Lists at least two required areas: disaggregation of revenue; contract balances; remaining performance obligations; significant judgements; contract cost assets"
+      ],
+      "misconceptions": ["Disclosing only total revenue by segment"],
+      "canonical_explanation": "The disclosure objective is to enable users to understand the nature, amount, timing and uncertainty of revenue and cash flows from contracts with customers. This requires disaggregating revenue into categories that depict how economic factors affect it, disclosing opening and closing contract balances and the revenue recognised from them, the transaction price allocated to remaining performance obligations and when it is expected to be recognised, significant judgements made, and assets from contract costs.",
+      "example": "An IT company disclosing revenue split by fixed-price vs time-and-material, by geography, and the backlog of unsatisfied obligations.",
+      "source_refs": ["IndAS115.para.110-129"]
+    },
+    {
+      "id": "ind_as_115.cross_cutting.onerous",
+      "level": 3,
+      "parent": "ind_as_115.cross_cutting",
+      "title": "Onerous contracts",
+      "rubric": [
+        "States that Ind AS 115 contains no onerous-contract guidance; Ind AS 37 applies",
+        "Explains that a provision is recognised when unavoidable costs of meeting the obligations exceed the expected economic benefits"
+      ],
+      "misconceptions": ["Looking for loss-contract rules inside Ind AS 115"],
+      "canonical_explanation": "Ind AS 115 does not address onerous contracts. When the unavoidable costs of meeting a contract's obligations exceed the economic benefits expected from it, a provision for the onerous contract is recognised under Ind AS 37, measured at the lower of the cost of fulfilling the contract and any compensation or penalties from failing to fulfil it.",
+      "example": "A fixed-price construction contract where revised cost estimates now exceed the contract price triggers an immediate loss provision under Ind AS 37.",
+      "source_refs": ["IndAS37.para.66-69"]
+    }
+  ]
+}

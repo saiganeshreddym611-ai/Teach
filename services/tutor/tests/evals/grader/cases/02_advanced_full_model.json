@@ -1,0 +1,17 @@
+{
+  "name": "Advanced finalist: all five steps with level-2 detail on three of them",
+  "focus_node_id": null,
+  "prior_context": "",
+  "transcript": "Ind AS 115 applies a five step model. Step one, identify the contract, which is an agreement creating enforceable rights and obligations, written, oral or implied. Step two, identify the performance obligations, meaning each promise to transfer a distinct good or service or a series of distinct goods that are substantially the same. Step three, determine the transaction price, which is the consideration the entity expects to be entitled to, excluding amounts collected for third parties like GST. Within that, variable consideration such as rebates, bonuses and penalties is estimated using either the expected value method, which is a probability weighted amount suited to a large number of similar contracts, or the most likely amount, which suits binary outcomes like a completion bonus. Step four, allocate the transaction price to the performance obligations so that each gets an amount depicting the consideration expected for it, on a relative standalone selling price basis. Step five, recognise revenue when or as each obligation is satisfied, which is when control transfers to the customer, either over time or at a point in time. Over time applies if any one of three criteria is met: the customer simultaneously receives and consumes the benefit, or the entity creates or enhances an asset the customer controls as it is created, or the asset has no alternative use to the entity and the entity has an enforceable right to payment for performance to date.",
+  "expect": {
+    "ind_as_115.step_1": "VERIFIED",
+    "ind_as_115.step_2": "VERIFIED",
+    "ind_as_115.step_3": "VERIFIED",
+    "ind_as_115.step_4": "VERIFIED",
+    "ind_as_115.step_5": "VERIFIED",
+    "ind_as_115.step_3.variable_consideration": "VERIFIED",
+    "ind_as_115.step_5.over_time_criteria": "VERIFIED",
+    "ind_as_115.step_3.constraint": "NOT_MENTIONED",
+    "ind_as_115.step_4.ssp_estimation": "NOT_MENTIONED"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Stated misconception: all warranties are separate performance obligations",
+  "focus_node_id": null,
+  "prior_context": "",
+  "transcript": "Step two is performance obligations. One thing I remember is that any warranty given with a product is always a separate performance obligation, so you always defer part of the revenue for every warranty until the warranty period ends.",
+  "expect": {
+    "ind_as_115.step_2.warranties": "GAP"
+  }
+}

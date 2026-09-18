@@ -1,0 +1,9 @@
+{
+  "name": "Teach-back on significant financing component: complete and correct",
+  "focus_node_id": "ind_as_115.step_3.financing",
+  "prior_context": "Tutor asked: Explain the significant financing component back to me in your own words, with an example.",
+  "transcript": "If the timing of payment gives either party a significant financing benefit, we adjust the transaction price for the time value of money so that revenue reflects the cash selling price at the date of transfer. The difference is unwound as interest income or interest expense, it's presented separately from revenue. There is a practical expedient: if the gap between transfer and payment is one year or less you don't adjust. For example if I deliver machinery today and the customer pays in three years with no interest, revenue is the discounted amount and the unwinding is interest income.",
+  "expect": {
+    "ind_as_115.step_3.financing": "VERIFIED"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Teach-back on SSP: confident but wrong (allocates on cost)",
+  "focus_node_id": "ind_as_115.step_4.ssp",
+  "prior_context": "Tutor asked: Now explain the relative standalone selling price basis back to me in your own words, with an example.",
+  "transcript": "Sure. So when you have a bundle you allocate the price to each item based on what it cost the company to make. So if the phone cost six hundred and the case cost fifty you split the price in that ratio. That is the standalone selling price method.",
+  "expect": {
+    "ind_as_115.step_4.ssp": "GAP"
+  }
+}

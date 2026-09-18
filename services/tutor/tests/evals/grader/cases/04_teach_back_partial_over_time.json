@@ -1,0 +1,9 @@
+{
+  "name": "Teach-back on over-time criteria: two of three criteria, third incomplete",
+  "focus_node_id": "ind_as_115.step_5.over_time_criteria",
+  "prior_context": "Tutor asked: Explain the three criteria for recognising revenue over time back to me, with an example of each.",
+  "transcript": "Revenue is over time if the customer receives and consumes the benefit at the same time as we perform, like a cleaning service. Or if we are building something on the customer's own land so they control it as we build it. And the third one is about the asset having no alternative use to us. You only need one of the three.",
+  "expect": {
+    "ind_as_115.step_5.over_time_criteria": "PARTIAL"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Vague name-dropping must not be VERIFIED",
+  "focus_node_id": null,
+  "prior_context": "",
+  "transcript": "I know there are five steps and there is something about variable consideration and a constraint, and standalone selling price comes in somewhere, and licences have special rules, and there's contract assets and contract liabilities on the balance sheet.",
+  "expect": {
+    "ind_as_115.step_3.variable_consideration": "!VERIFIED",
+    "ind_as_115.step_3.constraint": "!VERIFIED",
+    "ind_as_115.step_4.ssp": "!VERIFIED",
+    "ind_as_115.step_5.licences": "!VERIFIED",
+    "ind_as_115.cross_cutting.presentation": "!VERIFIED"
+  }
+}

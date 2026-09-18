@@ -1,0 +1,15 @@
+{
+  "name": "Beginner: names steps 1 and 2 only, with basic definitions",
+  "focus_node_id": null,
+  "prior_context": "",
+  "transcript": "Ok so Ind AS 115 is about revenue. There is a five step model. The first step is to identify the contract with the customer, a contract is basically an agreement between the parties that creates enforceable rights and obligations, it can be written or oral or even implied. The second step is identifying the performance obligations, which are the promises to transfer distinct goods or services to the customer. After that there are more steps about price and recognising revenue but I don't remember the details.",
+  "expect": {
+    "ind_as_115.step_1": "VERIFIED",
+    "ind_as_115.step_2": "VERIFIED",
+    "ind_as_115.step_3": "!VERIFIED",
+    "ind_as_115.step_4": "!VERIFIED",
+    "ind_as_115.step_5": "!VERIFIED",
+    "ind_as_115.step_1.criteria": "NOT_MENTIONED",
+    "ind_as_115.step_2.distinct": "NOT_MENTIONED"
+  }
+}
