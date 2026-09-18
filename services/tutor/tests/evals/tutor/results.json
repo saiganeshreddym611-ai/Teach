@@ -1,0 +1,132 @@
+[
+  {
+    "model": "nemotron-3-super:cloud",
+    "turns": [
+      {
+        "turn": "introduce",
+        "first_s": 1.73,
+        "total_s": 3.68,
+        "words": 75,
+        "ends_with_question": true,
+        "sentinel": false,
+        "sentinel_ok": true,
+        "leaks_marker": false,
+        "text": "Step 4 is allocating the transaction price to each performance obligation. We split the total price based on what each good or service would sell for separately. For example, a phone and a case sold together for ₹800: if the phone alone is ₹900 and the case ₹100, we allocate ₹720 to the phone and ₹80 to the case. Does that make sense? How would you allocate the price if the bundle included three items?",
+        "raw_tail": "rice if the bundle included three items?"
+      },
+      {
+        "turn": "continue",
+        "first_s": 4.43,
+        "total_s": 4.89,
+        "words": 28,
+        "ends_with_question": true,
+        "sentinel": false,
+        "sentinel_ok": true,
+        "leaks_marker": false,
+        "text": "Exactly, it's the price each good or service would fetch if sold separately. The contract price is split in proportion to those standalone prices. Does that clarify allocation?",
+        "raw_tail": "ne prices. Does that clarify allocation?"
+      },
+      {
+        "turn": "force_teach_back",
+        "first_s": 2.02,
+        "total_s": 2.54,
+        "words": 17,
+        "ends_with_question": false,
+        "sentinel": true,
+        "sentinel_ok": true,
+        "leaks_marker": false,
+        "text": "Spot on, labels can be gamed. Now, in your own words, explain Step 4 with an example.",
+        "raw_tail": "n Step 4 with an example. <<TEACH_BACK>>"
+      },
+      {
+        "turn": "teach_back_failed",
+        "first_s": 3.4,
+        "total_s": 4.41,
+        "words": 74,
+        "ends_with_question": false,
+        "sentinel": true,
+        "sentinel_ok": true,
+        "leaks_marker": false,
+        "text": "You said you split the price by cost to make each item. That is not correct. Step 4 is about allocating the transaction price to each performance obligation based on what the customer would pay for them separately, not on your cost. The goal is to show how much of the price relates to each promised good or service. Now explain the full four-step allocation idea again, including why we use standalone selling prices.",
+        "raw_tail": "tandalone selling prices. <<TEACH_BACK>>"
+      },
+      {
+        "turn": "complete",
+        "first_s": 2.14,
+        "total_s": 3.13,
+        "words": 78,
+        "ends_with_question": true,
+        "sentinel": false,
+        "sentinel_ok": true,
+        "leaks_marker": false,
+        "text": "You have correctly outlined the five-step model of Ind AS 115: identifying the contract, identifying performance obligations, determining the transaction price, allocating the transaction price, and recognising revenue when control transfers. You have not missed any steps, and your summary captures the essence of the standard.\n\nWhat would you like to study next? Would you like to dive deeper into any of these steps, such as how to identify performance obligations or how to determine the transaction price?",
+        "raw_tail": " how to determine the transaction price?"
+      }
+    ]
+  },
+  {
+    "model": "gemma4:31b-cloud",
+    "turns": [
+      {
+        "turn": "introduce",
+        "first_s": 1.23,
+        "total_s": 1.89,
+        "words": 116,
+        "ends_with_question": true,
+        "sentinel": false,
+        "sentinel_ok": true,
+        "leaks_marker": false,
+        "text": "You have a great handle on the sequence. You correctly named steps one, two, three, and five. You just missed step four, which is allocating the transaction price to the performance obligations. Once you have the total price from step three, you must split it among the promises identified in step two. The goal is to assign an amount to each obligation that reflects what the entity expects to receive for that specific good or service. For example, if you sell a phone and a case as a bundle for one thousand rupees, you have to decide how much of that thousand belongs to the phone and how much to the case. Does that make sense?",
+        "raw_tail": " much to the case. Does that make sense?"
+      },
+      {
+        "turn": "continue",
+        "first_s": 0.72,
+        "total_s": 1.14,
+        "words": 80,
+        "ends_with_question": true,
+        "sentinel": true,
+        "sentinel_ok": true,
+        "leaks_marker": false,
+        "text": "Exactly. You ignore the contract line items and instead look at the standalone selling price, which is what you would charge if you sold that good or service separately. The goal is to depict the amount of consideration you expect in exchange for each specific promise. Since you seem to have the core idea, could you explain this process back to me in your own words and give me a quick example of how you would allocate a bundle price?",
+        "raw_tail": " allocate a bundle price? <<TEACH_BACK>>"
+      },
+      {
+        "turn": "force_teach_back",
+        "first_s": 0.86,
+        "total_s": 1.16,
+        "words": 43,
+        "ends_with_question": true,
+        "sentinel": true,
+        "sentinel_ok": true,
+        "leaks_marker": false,
+        "text": "Spot on, that is exactly why the standard focuses on economic reality over labels. To make sure this is locked in, could you explain Step 4 back to me in your own words and give me a quick example of how it works?",
+        "raw_tail": " example of how it works? <<TEACH_BACK>>"
+      },
+      {
+        "turn": "teach_back_failed",
+        "first_s": 0.71,
+        "total_s": 1.16,
+        "words": 79,
+        "ends_with_question": true,
+        "sentinel": true,
+        "sentinel_ok": true,
+        "leaks_marker": false,
+        "text": "Actually, we don't use the cost to make the item for allocation. That is a common mistake. Instead, the goal is to allocate the transaction price based on the consideration the entity expects to be entitled to for each separate promise. We typically use the relative standalone selling prices of the goods or services to do this. Could you try explaining the whole process of step four again, including an example of how you would allocate a bundle price?",
+        "raw_tail": " allocate a bundle price? <<TEACH_BACK>>"
+      },
+      {
+        "turn": "complete",
+        "first_s": 0.85,
+        "total_s": 1.29,
+        "words": 83,
+        "ends_with_question": true,
+        "sentinel": false,
+        "sentinel_ok": true,
+        "leaks_marker": false,
+        "text": "You have a solid grasp of the core five step model of Ind AS 115, specifically identifying contracts, performance obligations, transaction price, and the transfer of control. You've correctly linked revenue recognition to the concept of control, which is the heart of the standard. You've made great progress today. Since we have covered the high level framework, what would you like to study next? Perhaps we could dive into the tricky parts of contract modifications or the nuances of principal versus agent arrangements?",
+        "raw_tail": " of principal versus agent arrangements?"
+      }
+    ]
+  }
+]

@@ -5,8 +5,8 @@ import MasteryGrid from "@/components/MasteryGrid";
 import TalkButton from "@/components/TalkButton";
 import Transcript, { type LocalTurn } from "@/components/Transcript";
 import Waveform, { type VoiceState } from "@/components/Waveform";
-import { createSession, getSession, streamTurn, type MasteryEntry, type Phase } from "@/lib/api";
-import { WebSpeechListener, WebSpeechSpeaker } from "@/lib/speech";
+import { API_BASE, createSession, getSession, streamTurn, type MasteryEntry, type Phase } from "@/lib/api";
+import { probeServerTTS, ServerSpeaker, WebSpeechListener, WebSpeechSpeaker, type Speaker } from "@/lib/speech";
 
 const PHASE_LABEL: Record<Phase, string> = {
   DIAGNOSTIC: "Baseline diagnostic",
@@ -38,7 +38,10 @@ export default function Kiosk() {
   // Speech objects live in refs (browser-only, mutable); only their
   // `supported` flag is needed for rendering, so it is mirrored into state.
   const listenerRef = useRef<WebSpeechListener | null>(null);
-  const speakerRef = useRef<WebSpeechSpeaker | null>(null);
+  const speakerRef = useRef<Speaker | null>(null);
+  const [ttsLabel, setTtsLabel] = useState("browser voice");
+  const [ttsVoices, setTtsVoices] = useState<string[]>([]);
+  const [ttsVoice, setTtsVoice] = useState<string>("");
   // Lazy initialiser: false on the server, real value on the client. Nothing
   // on the pre-session screen depends on it, so hydration output is identical.
   const [sttSupported] = useState(() => new WebSpeechListener().supported);
@@ -76,6 +79,31 @@ export default function Kiosk() {
       setPhase(s.phase);
       setTurns([{ id: "opening", role: "tutor", text: s.opening_prompt, phase: s.phase }]);
       await refreshMastery(s.session_id);
+      // Prefer the server engine (Piper/Kokoro) when the API has one loaded.
+      const forceBrowser = process.env.NEXT_PUBLIC_TTS === "browser";
+      const tts = forceBrowser ? null : await probeServerTTS(API_BASE);
+      if (tts?.ready) {
+        let remembered: string | null = null;
+        try {
+          remembered = localStorage.getItem("tts.voice");
+        } catch {
+          /* storage unavailable */
+        }
+        const chosen = remembered && tts.voices?.includes(remembered) ? remembered : (tts.voice ?? "");
+        speakerRef.current?.cancel();
+        speakerRef.current = new ServerSpeaker(
+          API_BASE,
+          (on) => {
+            speakingRef.current = on;
+            if (on) setVoice("speaking");
+            else maybeIdle();
+          },
+          chosen || null,
+        );
+        setTtsLabel(tts.engine);
+        setTtsVoices(tts.voices ?? []);
+        setTtsVoice(chosen);
+      }
       const speaker = speakerRef.current;
       if (speaker?.supported) {
         streamDoneRef.current = true;
@@ -87,7 +115,7 @@ export default function Kiosk() {
     } finally {
       setStarting(false);
     }
-  }, [refreshMastery]);
+  }, [refreshMastery, maybeIdle]);
 
   const submit = useCallback(
     async (transcript: string) => {
@@ -159,6 +187,17 @@ export default function Kiosk() {
 
   const stopListening = useCallback(() => listenerRef.current?.stop(), []);
 
+  const chooseVoice = useCallback((v: string) => {
+    setTtsVoice(v);
+    const sp = speakerRef.current;
+    if (sp instanceof ServerSpeaker) sp.voice = v || null;
+    try {
+      localStorage.setItem("tts.voice", v);
+    } catch {
+      /* storage unavailable */
+    }
+  }, []);
+
   const targetTitle = useMemo(
     () => mastery.find((m) => m.node_id === targetNode)?.title ?? null,
     [mastery, targetNode],
@@ -196,7 +235,28 @@ export default function Kiosk() {
           <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-zinc-300">{PHASE_LABEL[phase]}</span>
           {targetTitle && <span className="text-zinc-500 hidden sm:inline">→ {targetTitle}</span>}
         </div>
-        <span className="text-zinc-600 tabular-nums">session {sessionId}</span>
+        <span className="flex items-center gap-2 text-zinc-600 tabular-nums">
+          {ttsVoices.length > 0 ? (
+            <label className="hidden sm:flex items-center gap-1">
+              <span>{ttsLabel}</span>
+              <select
+                value={ttsVoice}
+                onChange={(e) => chooseVoice(e.target.value)}
+                aria-label="Tutor voice"
+                className="bg-zinc-900 border border-zinc-800 rounded px-1.5 py-0.5 text-zinc-300 focus:outline-none focus:border-zinc-600"
+              >
+                {ttsVoices.map((v) => (
+                  <option key={v} value={v}>
+                    {v.replace(/^en_(GB|US)-/, "$1 · ").replace(/-(medium|high|low|x_low)$/, "")}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : (
+            <span className="hidden sm:inline">{ttsLabel}</span>
+          )}
+          <span>session {sessionId}</span>
+        </span>
       </header>
 
       {/* transcript */}

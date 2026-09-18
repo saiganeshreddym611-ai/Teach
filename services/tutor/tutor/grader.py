@@ -2,7 +2,7 @@
 
 Three implementations behind one interface:
 - ClaudeGrader   : claude-opus-5, structured output, effort=high.
-- OllamaGrader   : any Ollama model (default nemotron-3-super:cloud), JSON-schema output.
+- OllamaGrader   : any Ollama model (default gemma4:31b-cloud), JSON-schema output.
 - MockGrader     : deterministic keyword overlap, for key-less UI/dev runs.
 """
 from __future__ import annotations
@@ -14,6 +14,7 @@ from typing import Protocol
 
 from anthropic import AsyncAnthropic
 from ollama import AsyncClient as OllamaAsyncClient
+from ollama import ResponseError as OllamaResponseError
 
 from .config import settings
 from .curriculum import Curriculum
@@ -107,6 +108,30 @@ def _inline_schema(schema: dict) -> dict:
     return walk(schema)
 
 
+def _extract_json(text: str) -> str:
+    """Tolerate the two most common wrappers models add around JSON: markdown
+    code fences and prose before/after the object. Anything else still fails
+    validation and triggers the corrective retry."""
+    t = text.strip()
+    if t.startswith("```"):
+        t = t.split("\n", 1)[1] if "\n" in t else t[3:]
+        if t.rstrip().endswith("```"):
+            t = t.rstrip()[:-3]
+        t = t.strip()
+        if t.lower().startswith("json"):
+            t = t[4:].lstrip()
+    # Take the first complete JSON object; ignore prose before it and anything
+    # after it (some models keep talking, or emit the object twice).
+    a = t.find("{")
+    if a != -1:
+        try:
+            _, end = json.JSONDecoder().raw_decode(t, a)
+            return t[a:end]
+        except ValueError:
+            pass
+    return t
+
+
 OLLAMA_OUTPUT_CONTRACT = """
 Output format - return ONLY a JSON object of exactly this shape, nothing else:
 {"verdicts": [{"node_id": "<id from the tree>", "status": "VERIFIED|PARTIAL|GAP|NOT_MENTIONED", "confidence": 0.0-1.0, "evidence": "<= 25 words"}], "summary": "<one sentence>"}
@@ -123,16 +148,27 @@ class OllamaGrader:
 
     def __init__(self, client: OllamaAsyncClient | None = None, model: str | None = None):
         self.client = client or OllamaAsyncClient(host=settings.ollama_host)
-        self.model = model or settings.ollama_model
+        self.model = model or settings.ollama_grader_model
         self.schema = _inline_schema(GraderResult.model_json_schema())
 
     async def _chat(self, messages: list[dict]):
-        return await self.client.chat(
-            model=self.model,
-            messages=messages,
-            format=self.schema,
-            options={"temperature": 0, "num_ctx": 32768},
-        )
+        kw = {} if settings.ollama_grader_think is None else {"think": settings.ollama_grader_think}
+        for attempt in (1, 2):
+            try:
+                return await self.client.chat(
+                    model=self.model,
+                    messages=messages,
+                    format=self.schema,
+                    options={"temperature": 0, "num_ctx": 32768},
+                    **kw,
+                )
+            except OllamaResponseError as e:
+                # :cloud models occasionally 502 on a TLS/proxy hiccup; one retry clears it.
+                if attempt == 2 or (e.status_code or 500) < 500:
+                    raise
+            except (ConnectionError, TimeoutError):
+                if attempt == 2:
+                    raise
 
     async def grade(self, curriculum, transcript, *, focus_node_id, prior_context, session_id) -> GraderResult:
         user = _user_content(curriculum, transcript, focus_node_id, prior_context)
@@ -141,7 +177,7 @@ class OllamaGrader:
         response = await self._chat(messages)
         content = response.message.content or ""
         try:
-            result = GraderResult.model_validate_json(content)
+            result = GraderResult.model_validate_json(_extract_json(content))
         except Exception as first_err:
             # One corrective round-trip: show the model its own output and the error.
             messages += [
@@ -155,7 +191,7 @@ class OllamaGrader:
             response = await self._chat(messages)
             content = response.message.content or ""
             try:
-                result = GraderResult.model_validate_json(content)
+                result = GraderResult.model_validate_json(_extract_json(content))
             except Exception as e:
                 raise RuntimeError(f"ollama grader returned invalid JSON twice ({e}): {content[:300]}") from e
         result = _finalise(curriculum, result)

@@ -171,6 +171,171 @@ export class WebSpeechSpeaker implements Speaker {
   }
 }
 
+// --------------------------------------------------------------------------- //
+// TTS: server-side engine (Piper / Kokoro) via POST /tts, one request per
+// sentence. Synthesis of sentence N+1 overlaps playback of sentence N, so the
+// first words start after one short synth and the rest pipelines behind it.
+// --------------------------------------------------------------------------- //
+export class ServerSpeaker implements Speaker {
+  readonly supported = true;
+  readonly onStateChange?: (speaking: boolean) => void;
+  private pending = "";
+  private queue: Array<{ text: string; started: boolean; audio: Promise<AudioBuffer | null> }> = [];
+  private ctx: AudioContext | null = null;
+  private current: AudioBufferSourceNode | null = null;
+  private playing = false;
+  private flushed = false;
+  private inflight = 0;
+  private abort = new AbortController();
+  private static readonly PREFETCH = 2; // sentences synthesised ahead of playback
+  /** Voice name understood by the server engine; null = server default. */
+  voice: string | null = null;
+
+  constructor(private readonly baseUrl: string, onStateChange?: (speaking: boolean) => void, voice: string | null = null) {
+    this.onStateChange = onStateChange;
+    this.voice = voice;
+  }
+
+  feed(delta: string) {
+    this.flushed = false;
+    this.pending += delta;
+    const re = /([^.!?]*[.!?]+)(\s+|$)/g;
+    let last = 0;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(this.pending)) !== null) {
+      const sentence = m[1].trim();
+      if (sentence) this.enqueue(sentence);
+      last = re.lastIndex;
+      if (m[2] === "") break;
+    }
+    this.pending = this.pending.slice(last);
+    this.pump();
+  }
+
+  flush() {
+    const rest = this.pending.trim();
+    this.pending = "";
+    if (rest) this.enqueue(rest);
+    this.flushed = true;
+    this.pump();
+    this.settle();
+  }
+
+  cancel() {
+    this.abort.abort();
+    this.abort = new AbortController();
+    this.queue = [];
+    this.pending = "";
+    this.inflight = 0;
+    this.flushed = true;
+    try {
+      this.current?.stop();
+    } catch {
+      /* already stopped */
+    }
+    this.current = null;
+    this.playing = false;
+    this.onStateChange?.(false);
+  }
+
+  private enqueue(text: string) {
+    // Lazily kick off synthesis only for the first PREFETCH items; later ones
+    // start as earlier ones finish (see pump), which bounds server load.
+    this.queue.push({ text, started: false, audio: Promise.resolve(null) });
+    this.prefetch();
+  }
+
+  private prefetch() {
+    for (const item of this.queue) {
+      if (this.inflight >= ServerSpeaker.PREFETCH) break;
+      if (item.started) continue;
+      item.started = true;
+      this.inflight++;
+      item.audio = this.synth(item.text).finally(() => {
+        this.inflight--;
+        this.prefetch();
+        this.pump();
+      });
+    }
+  }
+
+  private async synth(text: string): Promise<AudioBuffer | null> {
+    try {
+      const r = await fetch(`${this.baseUrl}/tts`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(this.voice ? { text, voice: this.voice } : { text }),
+        signal: this.abort.signal,
+      });
+      if (!r.ok) return null;
+      const bytes = await r.arrayBuffer();
+      return await this.audioCtx().decodeAudioData(bytes);
+    } catch {
+      return null; // aborted or server error: skip this sentence rather than stall
+    }
+  }
+
+  private audioCtx(): AudioContext {
+    if (!this.ctx) this.ctx = new AudioContext();
+    if (this.ctx.state === "suspended") void this.ctx.resume();
+    return this.ctx;
+  }
+
+  private pump() {
+    if (this.playing) return;
+    const next = this.queue[0];
+    if (!next || !next.started) {
+      this.settle();
+      return;
+    }
+    this.playing = true;
+    this.onStateChange?.(true);
+    void next.audio.then((buffer) => {
+      this.queue.shift();
+      if (!buffer) {
+        this.playing = false;
+        this.pump();
+        return;
+      }
+      const ctx = this.audioCtx();
+      const src = ctx.createBufferSource();
+      src.buffer = buffer;
+      src.connect(ctx.destination);
+      src.onended = () => {
+        if (this.current === src) this.current = null;
+        this.playing = false;
+        this.pump();
+      };
+      this.current = src;
+      src.start();
+    });
+  }
+
+  private settle() {
+    if (!this.playing && this.queue.length === 0 && this.inflight === 0 && this.flushed) {
+      this.onStateChange?.(false);
+    }
+  }
+}
+
+export interface TTSInfo {
+  engine: string;
+  ready: boolean;
+  voice?: string;
+  voices?: string[];
+}
+
+/** Ask the tutor service which TTS engine it runs; falls back to the browser. */
+export async function probeServerTTS(baseUrl: string): Promise<TTSInfo> {
+  try {
+    const r = await fetch(`${baseUrl}/tts/info`);
+    if (!r.ok) return { engine: "browser", ready: false };
+    return (await r.json()) as TTSInfo;
+  } catch {
+    return { engine: "browser", ready: false };
+  }
+}
+
 function pickVoice(): SpeechSynthesisVoice | null {
   const voices = window.speechSynthesis.getVoices();
   return (

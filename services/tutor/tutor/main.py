@@ -1,12 +1,14 @@
-"""FastAPI app: three routes, one of them SSE."""
+"""FastAPI app: session routes (one SSE) plus server-side TTS."""
 from __future__ import annotations
 
+import asyncio
 import json
+from contextlib import asynccontextmanager
 from typing import AsyncIterator
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import Response, StreamingResponse
 
 from .config import settings
 from .curriculum import load_curriculum
@@ -18,13 +20,27 @@ from .models import (
     Phase,
     Session,
     SessionView,
+    TTSRequest,
     Turn,
     TurnRequest,
 )
 from .state_machine import TurnEvent, run_turn
 from .store import store
+from .tts import describe_tts, get_tts, wav_bytes
 
-app = FastAPI(title="Socratic Tutor", version="0.1.0")
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    # Load TTS voices off the event loop so the first sentence of a session is fast.
+    try:
+        engine = get_tts()
+    except Exception:
+        engine = None
+    if engine is not None:
+        asyncio.get_running_loop().run_in_executor(None, engine.warm)
+    yield
+
+
+app = FastAPI(title="Socratic Tutor", version="0.1.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
@@ -35,7 +51,36 @@ app.add_middleware(
 
 @app.get("/health")
 async def health() -> dict:
-    return {"ok": True, "mock_llm": settings.mock_llm, "grader": describe_grader(), "tutor": describe_tutor()}
+    return {
+        "ok": True,
+        "mock_llm": settings.mock_llm,
+        "grader": describe_grader(),
+        "tutor": describe_tutor(),
+        "tts": describe_tts(),
+    }
+
+
+@app.get("/tts/info")
+async def tts_info() -> dict:
+    return describe_tts()
+
+
+@app.post("/tts")
+async def tts(req: TTSRequest) -> Response:
+    """Synthesise one sentence (the client sends sentences as the tutor streams)."""
+    engine = get_tts()
+    if engine is None:
+        raise HTTPException(404, "server-side TTS is disabled (TTS_ENGINE=browser)")
+    speed = req.speed or settings.tts_speed
+    try:
+        samples = await asyncio.to_thread(engine.synth, req.text, speed, req.voice)
+    except FileNotFoundError as e:
+        raise HTTPException(404, str(e))
+    return Response(
+        content=wav_bytes(samples, engine.sample_rate),
+        media_type="audio/wav",
+        headers={"Cache-Control": "no-store", "X-TTS-Engine": engine.name, "X-TTS-Voice": req.voice or engine.voice},
+    )
 
 
 @app.post("/session", response_model=CreateSessionResponse)

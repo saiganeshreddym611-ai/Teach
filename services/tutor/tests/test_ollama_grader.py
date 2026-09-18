@@ -76,3 +76,20 @@ async def test_wrong_shape_twice_raises(curriculum):
     g = OllamaGrader(client=fake, model="fake-model")
     with pytest.raises(RuntimeError, match="invalid JSON twice"):
         await g.grade(curriculum, "x", focus_node_id=None, prior_context="", session_id="t")
+
+
+def test_extract_json_tolerates_fences_and_prose():
+    from tutor.grader import _extract_json
+    body = '{"verdicts": [], "summary": "x"}'
+    assert _extract_json(body) == body
+    assert _extract_json("```json\n" + body + "\n```") == body
+    assert _extract_json("```\n" + body + "\n```") == body
+    assert _extract_json("Here you go:\n" + body + "\nHope that helps.") == body
+
+
+def test_extract_json_takes_first_object_and_ignores_trailing_output():
+    from tutor.grader import _extract_json
+    body = '{"verdicts": [], "summary": "x"}'
+    assert _extract_json(body + "\n\nSo in summary the student...") == body
+    assert _extract_json(body + body) == body
+    assert _extract_json('{"a": "brace } inside string"} trailing') == '{"a": "brace } inside string"}'

@@ -102,7 +102,7 @@ CASES = [
     },
     {
         "file": "06_vague_mention_not_verified.json",
-        "name": "Vague name-dropping must not be VERIFIED",
+        "name": "Vague name-dropping evidences nothing: NOT_MENTIONED, not PARTIAL",
         "focus_node_id": None,
         "prior_context": "",
         "transcript": (
@@ -111,11 +111,11 @@ CASES = [
             "and contract liabilities on the balance sheet."
         ),
         "expect": {
-            "ind_as_115.step_3.variable_consideration": "!VERIFIED",
-            "ind_as_115.step_3.constraint": "!VERIFIED",
-            "ind_as_115.step_4.ssp": "!VERIFIED",
-            "ind_as_115.step_5.licences": "!VERIFIED",
-            "ind_as_115.cross_cutting.presentation": "!VERIFIED",
+            "ind_as_115.step_3.variable_consideration": "NOT_MENTIONED",
+            "ind_as_115.step_3.constraint": "NOT_MENTIONED",
+            "ind_as_115.step_4.ssp": "NOT_MENTIONED",
+            "ind_as_115.step_5.licences": "NOT_MENTIONED",
+            "ind_as_115.cross_cutting.presentation": "NOT_MENTIONED",
         },
     },
     {

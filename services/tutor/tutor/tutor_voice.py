@@ -9,6 +9,7 @@ from typing import AsyncIterator, Protocol
 
 from anthropic import AsyncAnthropic
 from ollama import AsyncClient as OllamaAsyncClient
+from ollama import ResponseError as OllamaResponseError
 
 from .config import settings
 from .curriculum import Curriculum
@@ -60,21 +61,33 @@ class OllamaTutor:
 
     def __init__(self, client: OllamaAsyncClient | None = None, model: str | None = None):
         self.client = client or OllamaAsyncClient(host=settings.ollama_host)
-        self.model = model or settings.ollama_model
+        self.model = model or settings.ollama_tutor_model
 
     async def stream(self, curriculum, session, directive) -> AsyncIterator[str]:
         system = tree_block(curriculum)["text"] + "\n\n" + TUTOR_INSTRUCTIONS
         messages = [{"role": "system", "content": system}, *_history(session), {"role": "system", "content": directive}]
-        async for chunk in await self.client.chat(
-            model=self.model,
-            messages=messages,
-            stream=True,
-            think=False,
-            options={"temperature": 0.3, "num_ctx": 32768, "num_predict": 400},
-        ):
-            text = chunk.message.content
-            if text:
-                yield text
+        for attempt in (1, 2):
+            yielded = False
+            try:
+                async for chunk in await self.client.chat(
+                    model=self.model,
+                    messages=messages,
+                    stream=True,
+                    think=False,
+                    options={"temperature": 0.3, "num_ctx": 32768, "num_predict": 400},
+                ):
+                    text = chunk.message.content
+                    if text:
+                        yielded = True
+                        yield text
+                return
+            except OllamaResponseError as e:
+                # Retry only if nothing reached the speaker yet (a 502 before first token).
+                if yielded or attempt == 2 or (e.status_code or 500) < 500:
+                    raise
+            except (ConnectionError, TimeoutError):
+                if yielded or attempt == 2:
+                    raise
 
 
 def _short_title(title: str) -> str:

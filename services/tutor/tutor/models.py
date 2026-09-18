@@ -132,6 +132,12 @@ class TurnRequest(BaseModel):
     transcript: str = Field(min_length=1)
 
 
+class TTSRequest(BaseModel):
+    text: str = Field(min_length=1, max_length=1000)
+    speed: float | None = Field(default=None, ge=0.5, le=2.0)
+    voice: str | None = Field(default=None, max_length=64, pattern=r"^[A-Za-z0-9_\-]+$")
+
+
 class MasteryEntry(BaseModel):
     node_id: str
     title: str
