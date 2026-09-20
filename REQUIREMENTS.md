@@ -165,7 +165,37 @@ known misconceptions, a canonical explanation, an example, and source references
 Strategic alignment: competency-based education (NEP 2020), democratised 1-on-1 mentorship, and
 direct hiring on granular proof of capability ("mastered 95% of complex financial instruments").
 
-## 9. Acceptance criteria (demo script)
+## 9. Job-scoped learning and demand-aware guidance (Phase 2-3 goal)
+
+Stated in the founder's brief inside the pitch but absent from its structured sections. Treat it as
+product direction that the MVP data model must not block.
+
+- **Study only what the job needs.** A *job profile* is a set of tree nodes with a minimum depth
+  for each. A student targeting a job studies that set, not the whole syllabus.
+- **Adjacent fields to basic or integration depth only.** Areas outside the core of the job are
+  required to Level 1, or to the specific nodes needed to work with the core, never to full depth.
+- **Depth maps to role tier.** Deeper verified coverage (more Level 2 and Level 3 nodes) qualifies
+  for higher-paid roles in the same field. The system shows the student which additional nodes
+  unlock the next tier, so the incentive to go deeper is explicit and honest.
+- **Multi-field jobs.** A job profile can span fields (for example Financial Reporting plus Audit).
+  The ledger records every field, so eligibility is a set comparison, not a score.
+- **Honest demand guidance.** Using workforce data (the Phase 3 macro engine), the system tells
+  students plainly which sectors have demand, which are saturated, and what depth pays. Guidance
+  must show the data behind it and must never hide oversupply to keep a student enrolled.
+
+Implications for the data model (cheap to respect now):
+
+- Keep node `level` as the depth tier. Add `job_profiles/*.json` later:
+  `{job_id, title, sector, required: [{node_id, min_status}], adjacent: [{node_id, min_status}], pay_band}`.
+- The ledger does not change. "Qualified for job X" is a projection: every required node is
+  `VERIFIED`.
+- The node selector gains an optional job-profile filter: walk only nodes in the profile, core
+  before adjacent.
+- Demand signals arrive as a read-only feed; guidance consumes them, never the grader.
+
+Not in the MVP. One seeded job profile is acceptable for a demo if it costs nothing.
+
+## 10. Acceptance criteria (demo script)
 
 1. Start a session; the tutor asks the student to explain everything about Ind AS 115.
 2. Student describes the five steps but omits Step 4 (allocation). Dashboard shows Steps 1, 2, 3, 5
@@ -178,7 +208,7 @@ direct hiring on granular proof of capability ("mastered 95% of complex financia
    corrects, bounded retries apply.
 7. Same transcript graded three times yields identical statuses.
 
-## 10. Constraints and open questions from the pitch
+## 11. Constraints and open questions from the pitch
 
 - Employers must be able to trust that the ledger reflects the unassisted student (motivates the
   integrity layer).
@@ -187,7 +217,7 @@ direct hiring on granular proof of capability ("mastered 95% of complex financia
 - Fairness across learner levels: the same opening prompt must work for a beginner and a finalist
   with several attempts behind them (motivates the three-level tree and adaptive tone).
 
-## 11. Repository context
+## 12. Repository context
 
 This repository already implements the MVP described above: `curriculum/ind_as_115.json`
 (three-level tree), `services/tutor/` (FastAPI orchestrator, state machine, grader, tutor voice,
